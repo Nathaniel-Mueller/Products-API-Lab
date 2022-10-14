@@ -21,7 +21,9 @@ def productsList(request):
 
 @api_view(['GET'])
 def productsDetail(request, pk):
-    
-    product = Product.objects.filter(pk=pk)
-    serializer = ProductSerializer(product,many=True) 
-    return Response(serializer.data)
+    try:
+        product = Product.objects.get(pk=pk)
+        serializer = ProductSerializer(product) 
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    except Product.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
