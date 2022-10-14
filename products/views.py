@@ -8,7 +8,6 @@ from .serializers import *
 @api_view(['GET','POST'])
 def productsList(request):
     
-    
     if request.method == 'GET':
         products = Product.objects.all()
         serializer = ProductSerializer(products,many=True)
@@ -18,3 +17,11 @@ def productsList(request):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data,status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+def productsDetail(request, pk):
+    
+    product = Product.objects.filter(pk=pk)
+    serializer = ProductSerializer(product,many=True) 
+    return Response(serializer.data)
